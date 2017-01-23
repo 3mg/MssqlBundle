@@ -42,7 +42,7 @@ class Driver implements \Doctrine\DBAL\Driver
                 $driverOptions
             );
         }
-        
+
         return $conn;
     }
 
@@ -72,19 +72,21 @@ class Driver implements \Doctrine\DBAL\Driver
             return $dsn;
 
         } else {
-
-            $dsn = 'dblib:';
+            $dsn = 'odbc:';
             if (isset($params['host'])) {
-                $dsn .= 'host=' . $params['host'] . ';';
+                $dsn .= 'Server=' . $params['host'] . ';';
             }
             if (isset($params['port'])) {
-                $dsn .= 'port=' . $params['port'] . ';';
+                $dsn .= 'Port=' . $params['port'] . ';';
             }
             if (isset($params['dbname'])) {
-                $dsn .= 'dbname=' . $params['dbname'] . ';';
+                $dsn .= 'Database=' . $params['dbname'] . ';';
             }
-            if (isset($params['charset'])) {
+            /*if (isset($params['charset'])) {
                 $dsn .= 'charset=' . $params['charset'] . ';';
+            }*/
+            if (isset($params['driverOptions']['driver'])) {
+                $dsn .= 'Driver=' . $params['driverOptions']['driver'] . ';';
             }
 
             return $dsn;
@@ -103,7 +105,7 @@ class Driver implements \Doctrine\DBAL\Driver
 
     public function getName()
     {
-        return 'pdo_dblib';
+        return 'pdo_odbc';
     }
 
     public function getDatabase(\Doctrine\DBAL\Connection $conn)
